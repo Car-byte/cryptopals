@@ -14,4 +14,30 @@ public class Xor {
 
         return xored;
     }
+
+    public static byte[] singleByteXor(final byte[] block, final byte key) {
+        final byte[] xored = new byte[block.length];
+        for (int i = 0; i < block.length; i++) {
+            xored[i] = (byte) (block[i] ^ key);
+        }
+
+        return xored;
+    }
+
+    public static byte[] breakSingleByteXoredBlock(final byte[] block) {
+        byte[] bestBlockByHeuristic = null;
+        int bestBlockHeuristic = Integer.MIN_VALUE;
+
+        for (int i = 0; i <= 255; i++) {
+            final byte[] currentBlock = Xor.singleByteXor(block, (byte) i);
+            final int currentBlockHeuristic = Heuristic.computeHeuristic(currentBlock);
+
+            if (currentBlockHeuristic > bestBlockHeuristic) {
+                bestBlockHeuristic = currentBlockHeuristic;
+                bestBlockByHeuristic = currentBlock;
+            }
+        }
+
+        return bestBlockByHeuristic;
+    }
 }
