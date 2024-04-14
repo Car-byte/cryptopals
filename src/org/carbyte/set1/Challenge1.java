@@ -5,10 +5,16 @@ import org.carbyte.common.Challenge;
 import java.util.Base64;
 import java.util.HexFormat;
 
-public class Challenge1 implements Challenge {
+public class Challenge1 implements Challenge<String> {
+
+    private final String input;
+
+    public Challenge1(final String input) {
+        this.input = input;
+    }
 
     @Override
-    public String solve(final String input) {
+    public String solve() {
         return hexToBase64(input);
     }
 

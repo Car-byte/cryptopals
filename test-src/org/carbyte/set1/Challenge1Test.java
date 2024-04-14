@@ -10,7 +10,7 @@ class Challenge1Test {
 
     @Test
     public void challenge1() {
-        final String actualOutput = new Challenge1().solve(HEX_INPUT);
+        final String actualOutput = new Challenge1(HEX_INPUT).solve();
 
         Assertions.assertEquals(BASE64_OUTPUT, actualOutput);
     }
