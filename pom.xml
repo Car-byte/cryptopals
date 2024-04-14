@@ -42,4 +42,9 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <sourceDirectory>${basedir}/src</sourceDirectory>
+        <testSourceDirectory>${basedir}/test-src</testSourceDirectory>
+    </build>
+
 </project>
