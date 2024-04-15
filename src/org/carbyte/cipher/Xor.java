@@ -15,13 +15,15 @@ public class Xor {
         return Bytes.toArray(IntStream.range(0, block1.length)
                 .boxed()
                 .map(Integer::byteValue)
-                .map(i -> (byte) (block1[i] ^ block2[i]))
+                .map(i -> block1[i] ^ block2[i])
+                .map(Integer::byteValue)
                 .toList());
     }
 
     public static byte[] singleByteXor(final byte[] block, final byte key) {
         return Bytes.toArray(Bytes.asList(block).stream()
-                        .map(b -> (byte) (b ^ key))
+                        .map(b -> b ^ key)
+                        .map(Integer::byteValue)
                         .toList());
     }
 
@@ -38,5 +40,12 @@ public class Xor {
                 .map(Xor::breakSingleByteXoredBlock)
                 .max(Comparator.comparingInt(Heuristic::computeHeuristic))
                 .orElseThrow();
+    }
+
+    public static byte[] repeatKeyXor(final byte[] plainText, final byte[] key) {
+        return Bytes.toArray(IntStream.range(0, plainText.length)
+                .mapToObj(i -> plainText[i] ^ key[i % key.length])
+                .map(Integer::byteValue)
+                .toList());
     }
 }
