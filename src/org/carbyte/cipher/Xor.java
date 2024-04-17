@@ -122,17 +122,11 @@ public class Xor {
     }
 
     private static List<List<Byte>> transposeBlocks(final List<List<Byte>> partitions) {
-        Preconditions.checkArgument(!partitions.isEmpty());
-
-        final List<List<Byte>> transposedBlocks = new ArrayList<>();
-        partitions.forEach((ignore -> transposedBlocks.add(new ArrayList<>())));
-
-        partitions.forEach(partition -> {
-            for (int i = 0; i < partition.size(); i++) {
-                transposedBlocks.get(i).add(partition.get(i));
-            }
-        });
-
-        return transposedBlocks;
+        return IntStream.range(0, partitions.size())
+                .mapToObj(i -> partitions.stream()
+                        .filter(partition -> i < partition.size())
+                        .map(partition -> partition.get(i))
+                        .toList())
+                .toList();
     }
 }

@@ -1,6 +1,8 @@
 package org.carbyte.cipher;
 
 
+import com.google.common.primitives.Bytes;
+
 public class Heuristic {
 
     // bytes are signed, so used a mask to upcast the byte to an int
@@ -17,12 +19,10 @@ public class Heuristic {
      * @return the computed heuristic score
      */
     public static int computeHeuristic(final byte[] bytes) {
-        int heuristicScore = 0;
-        for (byte b: bytes) {
-            heuristicScore += getHeuristicOfByte(b);
-        }
-
-        return heuristicScore;
+        return Bytes.asList(bytes)
+                .stream()
+                .mapToInt(Heuristic::getHeuristicOfByte)
+                .sum();
     }
 
     private static int getHeuristicOfByte(final byte b) {
