@@ -10,6 +10,7 @@ public abstract class Aes {
 
     public static final String AES = "AES";
     public static final int KEY_SIZE_BYTES = 16;
+    public static final int BLOCK_SIZE_BYTES = 16;
     private final SecretKey key;
 
     public Aes(final byte[] key) {
