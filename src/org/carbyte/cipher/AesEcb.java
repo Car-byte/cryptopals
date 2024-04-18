@@ -1,6 +1,7 @@
 package org.carbyte.cipher;
 
 import com.google.common.base.Preconditions;
+import org.carbyte.padding.Pkcs7;
 
 import javax.crypto.Cipher;
 
@@ -13,7 +14,7 @@ public class AesEcb extends Aes {
     @Override
     public byte[] encrypt(byte[] plainTextBlock) {
         try {
-            return getCipherWithInit(Cipher.ENCRYPT_MODE).doFinal(plainTextBlock);
+            return getCipherWithInit(Cipher.ENCRYPT_MODE).doFinal(Pkcs7.pad(plainTextBlock));
         } catch (final Throwable e) {
             throw new RuntimeException(e);
         }
@@ -22,7 +23,7 @@ public class AesEcb extends Aes {
     @Override
     public byte[] decrypt(byte[] cipherTextBlock) {
         try {
-            return getCipherWithInit(Cipher.DECRYPT_MODE).doFinal(cipherTextBlock);
+            return Pkcs7.unPad(getCipherWithInit(Cipher.DECRYPT_MODE).doFinal(cipherTextBlock));
         } catch (final Throwable e) {
             throw new RuntimeException(e);
         }
