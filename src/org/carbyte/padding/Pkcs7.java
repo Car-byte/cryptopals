@@ -8,6 +8,9 @@ import java.util.Arrays;
 
 public class Pkcs7 {
 
+    public static class InvalidPaddingException extends RuntimeException {
+    }
+
     public static byte[] pad(final byte[] input) {
         return pad(input, Aes.KEY_SIZE_BYTES);
     }
@@ -40,7 +43,7 @@ public class Pkcs7 {
 
         while (expectedPaddingLength > 0) {
             if (padded[padded.length - expectedPaddingLength] != expectedPaddingValue) {
-                throw new IllegalArgumentException("Padding is invalid!");
+                throw new InvalidPaddingException();
             }
 
             expectedPaddingLength--;
