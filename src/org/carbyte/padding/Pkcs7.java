@@ -31,18 +31,20 @@ public class Pkcs7 {
 
         checkValidPadding(padded);
 
-        final int paddingLength = padded[padded.length - 1];
+        final int paddingLength = Byte.toUnsignedInt(padded[padded.length - 1]);
         return Arrays.copyOfRange(padded, 0, padded.length - paddingLength);
     }
 
     private static void checkValidPadding(final byte[] padded) {
-        final int expectedPaddingValue = padded[padded.length - 1];
-        int expectedPaddingLength = padded[padded.length - 1];
+        final int expectedPaddingValue = Byte.toUnsignedInt(padded[padded.length - 1]);
+        int expectedPaddingLength = Byte.toUnsignedInt(padded[padded.length - 1]);
 
-        Preconditions.checkArgument(padded.length - expectedPaddingLength >= 0);
+        if (expectedPaddingLength > padded.length || expectedPaddingLength == 0) {
+            throw new InvalidPaddingException();
+        }
 
         while (expectedPaddingLength > 0) {
-            if (padded[padded.length - expectedPaddingLength] != expectedPaddingValue) {
+            if (Byte.toUnsignedInt(padded[padded.length - expectedPaddingLength]) != expectedPaddingValue) {
                 throw new InvalidPaddingException();
             }
 
